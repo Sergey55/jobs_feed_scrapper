@@ -1,12 +1,9 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
-namespace JobsFeedScraper
+namespace JobsFeedScrapper.Service
 {
     class Program
     {
@@ -22,7 +19,7 @@ namespace JobsFeedScraper
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<Scrapper>();
+                    services.AddHostedService<FeedService>();
                 });
     }
 }

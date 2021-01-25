@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -14,7 +13,7 @@ using JobsFeedScraper.Configuration;
 
 namespace JobsFeedScraper
 {
-    public class Scraper : BackgroundService
+    public class Scrapper : BackgroundService
     {
         private const int POLL_INTERVAL = 60 * 1000;
         
@@ -22,9 +21,9 @@ namespace JobsFeedScraper
 
         private IList<FeedItem> _feeds;
 
-        private readonly ILogger<Scraper> _logger;
+        private readonly ILogger<Scrapper> _logger;
 
-        public Scraper(ILogger<Scraper> logger, IConfiguration config)
+        public Scrapper(ILogger<Scrapper> logger, IConfiguration config)
         {
             this._logger = logger;
             this._config = config;
