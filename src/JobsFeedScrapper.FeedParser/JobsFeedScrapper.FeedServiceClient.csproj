@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JobsFeedScrapper.Configuration\JobsFeedScrapper.Configuration.csproj" />
+    <ProjectReference Include="..\JobsFeedScrapper.EventHub\JobsFeedScrapper.EventHub.csproj" />
+    <ProjectReference Include="..\JobsFeedScrapper.Models\JobsFeedScrapper.Models.csproj" />
   </ItemGroup>
 
 </Project>

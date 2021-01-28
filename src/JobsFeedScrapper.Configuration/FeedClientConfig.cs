@@ -1,5 +1,5 @@
-﻿using JobsFeedScraper.Configuration;
-using JobsFeedScrapper.FeedServiceClient;
+﻿using JobsFeedScrapper.FeedServiceClient;
+using JobsFeedScrapper.Models;
 using System.Collections.Generic;
 
 namespace JobsFeedScrapper.Configuration.Models

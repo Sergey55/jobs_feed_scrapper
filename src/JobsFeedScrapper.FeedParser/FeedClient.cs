@@ -1,4 +1,5 @@
-﻿using JobsFeedScraper.Configuration;
+﻿using JobsFeedScrapper.EventHub;
+using JobsFeedScrapper.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Parsers.Rss;
 using System;
@@ -20,12 +21,18 @@ namespace JobsFeedScrapper.FeedServiceClient
 
         private readonly ILogger<FeedClient> _logger;
 
+        private readonly IJobsFeedEventHub _eventHub;
+
         private CancellationTokenSource _cts;
 
-        public FeedClient(IFeedClientConfig config, ILogger<FeedClient> logger)
+        public FeedClient(
+            IFeedClientConfig config, 
+            ILogger<FeedClient> logger,
+            IJobsFeedEventHub eventHub)
         {
             this._config = config;
             this._logger = logger;
+            this._eventHub = eventHub;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -35,6 +42,9 @@ namespace JobsFeedScrapper.FeedServiceClient
             _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
             var task = Task.Factory.StartNew(async () => {
+
+                // Add delay in order to let all services be up and running.
+                await Task.Delay(100);
 
                 while (!cancellationToken.IsCancellationRequested)
                 {
@@ -76,6 +86,8 @@ namespace JobsFeedScrapper.FeedServiceClient
 
                     RaiseNewJobs(feed, rss);
                 }
+
+                feed.LastCheckDate = DateTime.UtcNow;
             }
             catch (Exception e)
             {
@@ -83,9 +95,21 @@ namespace JobsFeedScrapper.FeedServiceClient
             }
         }
 
-        private void RaiseNewJobs(FeedItem feed, IEnumerable<RssSchema> jobs)
+        private void RaiseNewJobs(FeedItem feed, IEnumerable<RssSchema> data)
         {
-            NewJobs?.Invoke(this, new NewJobsEventArgs(feed, jobs.ToList()));
+            var jobs = data
+                .Where(j => j.PublishDate >= feed.LastCheckDate)
+                .Select(j => new JobDescription() { 
+                    PublishDate = j.PublishDate,
+                    Title = j.Title,
+                    Content = j.Content,
+                    FeedUrl = j.FeedUrl
+                })
+                .ToList();
+
+            _eventHub.RaiseNewJobs(feed, jobs);
+
+            NewJobs?.Invoke(this, new NewJobsEventArgs(feed, jobs));
         }
 
         private void CancelIfRunning()

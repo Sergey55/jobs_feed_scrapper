@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobsFeedScraper", "JobsFeedScraper.csproj", "{EECCFCFF-4A32-4311-A42B-6BC2C1F2FD20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = ".\JobsFeedScrapper.FeedServiceClient", "JobsFeedScrapper.FeedParser\JobsFeedScrapper.FeedServiceClient.csproj", "{813D38B2-5389-483F-9F32-7566E0B0E0B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobsFeedScrapper.FeedServiceClient", "..\JobsFeedScrapper.FeedParser\JobsFeedScrapper.FeedServiceClient.csproj", "{813D38B2-5389-483F-9F32-7566E0B0E0B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = ".\JobsFeedScrapper.Configuration", "JobsFeedScrapper.Configuration\JobsFeedScrapper.Configuration.csproj", "{130C097A-DA6D-48AE-BA01-64CE4838C580}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobsFeedScrapper.Configuration", "..\JobsFeedScrapper.Configuration\JobsFeedScrapper.Configuration.csproj", "{130C097A-DA6D-48AE-BA01-64CE4838C580}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = ".\JobsFeedScrapper.Service", "JobsFeedScrapper.Service\JobsFeedScrapper.Service.csproj", "{1AB43818-4309-4DA2-A237-B058A8933728}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobsFeedScrapper.Service", "..\JobsFeedScrapper.Service\JobsFeedScrapper.Service.csproj", "{1AB43818-4309-4DA2-A237-B058A8933728}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = ".\JobsFeedScrapper.Models", "JobsFeedScrapper.Models\JobsFeedScrapper.Models.csproj", "{2EC4155C-DA15-42F9-B7AC-0980F5233A87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = ".\JobsFeedScrapper.EventHub", "JobsFeedScrapper.EventHub\JobsFeedScrapper.EventHub.csproj", "{234F43AD-B1BD-4157-85C4-0826466FCB0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EECCFCFF-4A32-4311-A42B-6BC2C1F2FD20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EECCFCFF-4A32-4311-A42B-6BC2C1F2FD20}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EECCFCFF-4A32-4311-A42B-6BC2C1F2FD20}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EECCFCFF-4A32-4311-A42B-6BC2C1F2FD20}.Release|Any CPU.Build.0 = Release|Any CPU
 		{813D38B2-5389-483F-9F32-7566E0B0E0B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{813D38B2-5389-483F-9F32-7566E0B0E0B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{813D38B2-5389-483F-9F32-7566E0B0E0B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +31,14 @@ Global
 		{1AB43818-4309-4DA2-A237-B058A8933728}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AB43818-4309-4DA2-A237-B058A8933728}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AB43818-4309-4DA2-A237-B058A8933728}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EC4155C-DA15-42F9-B7AC-0980F5233A87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EC4155C-DA15-42F9-B7AC-0980F5233A87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EC4155C-DA15-42F9-B7AC-0980F5233A87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EC4155C-DA15-42F9-B7AC-0980F5233A87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{234F43AD-B1BD-4157-85C4-0826466FCB0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{234F43AD-B1BD-4157-85C4-0826466FCB0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{234F43AD-B1BD-4157-85C4-0826466FCB0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{234F43AD-B1BD-4157-85C4-0826466FCB0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

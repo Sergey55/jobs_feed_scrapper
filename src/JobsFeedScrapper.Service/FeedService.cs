@@ -1,11 +1,12 @@
-﻿using JobsFeedScraper.Configuration;
-using JobsFeedScrapper.Configuration.Models;
+﻿using JobsFeedScrapper.Configuration.Models;
+using JobsFeedScrapper.EventHub;
 using JobsFeedScrapper.FeedServiceClient;
+using JobsFeedScrapper.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,26 +20,25 @@ namespace JobsFeedScrapper.Service
 
         private readonly IConfiguration _configuration;
 
-        public FeedService(ILogger<FeedClient> logger, IConfiguration configuration)
+        private readonly IJobsFeedEventHub _eventHub;
+
+        public FeedService(
+            ILogger<FeedClient> logger, 
+            IConfiguration configuration,
+            IJobsFeedEventHub eventHub)
         {
             _logger = logger;
             _configuration = configuration;
+            _eventHub = eventHub;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Starting Feed Service Client");
 
-            _feedClient = new FeedClient(GenerateFeedClientConfig(), _logger);
-
-            _feedClient.NewJobs += _feedClient_NewJobs;
+            _feedClient = new FeedClient(GenerateFeedClientConfig(), _logger, _eventHub);
 
             return _feedClient.StartAsync(stoppingToken);
-        }
-
-        private void _feedClient_NewJobs(object sender, NewJobsEventArgs e)
-        {
-            _logger.LogInformation($"{e.Feed.Name}/{e.Jobs.Count()}");
         }
 
         public override Task StopAsync(CancellationToken cancellationToken)
@@ -55,7 +55,7 @@ namespace JobsFeedScrapper.Service
         {
             return new FeedClientConfig()
             {
-                PollIntervar = 60 * 1000,
+                PollIntervar = 5 * 60 * 1000,
 
                 Feeds = _configuration.GetSection("feeds").Get<List<FeedItem>>()
             };
