@@ -97,6 +97,10 @@ namespace JobsFeedScrapper.FeedServiceClient
 
         private void RaiseNewJobs(FeedItem feed, IEnumerable<RssSchema> data)
         {
+            if (data.Count() == 0) {
+                _logger.LogInformation($"Feed {feed.Name}: no new jobs.");
+            }
+
             var jobs = data
                 .Where(j => j.PublishDate >= feed.LastCheckDate)
                 .Select(j => new JobDescription() { 
