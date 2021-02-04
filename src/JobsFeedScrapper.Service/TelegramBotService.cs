@@ -44,24 +44,31 @@ namespace JobsFeedScrapper.Service
         {
             using(await _mutex.LockAsync())
             { 
-                foreach (var job in e.Jobs)
+                try
                 {
-                    var content = job.Content
-                        .Replace("<br />", "\n")
-                        .Replace("&nbsp;", " ")
-                        .Replace("&bull;", "•");
+                    foreach (var job in e.Jobs)
+                    {
+                        var content = job.Content
+                            .Replace("<br />", "\n")
+                            .Replace("&nbsp;", " ")
+                            .Replace("&bull;", "•");
 
-                    var sb = new StringBuilder();
-                    sb.Append($"(<b>{e.Feed.Name}) {job.Title}</b>\n\n");
-                    sb.Append(content);
+                        var sb = new StringBuilder();
+                        sb.Append($"(<b>{e.Feed.Name}) {job.Title}</b>\n\n");
+                        sb.Append(content);
 
-                    var message = sb.ToString();
-                    message = sb.ToString().Substring(0, Math.Min(4096, message.Length));
+                        var message = sb.ToString();
+                        message = sb.ToString().Substring(0, Math.Min(4096, message.Length));
 
-                    await _bot.SendTextMessageAsync(
-                        new Telegram.Bot.Types.ChatId(_chatId),
-                        text: message,
-                        parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
+                        await _bot.SendTextMessageAsync(
+                            new Telegram.Bot.Types.ChatId(_chatId),
+                            text: message,
+                            parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
+                    }                    
+                }
+                catch (System.Exception ex)
+                {
+                    _logger.LogError(ex, ex.Message);
                 }
             }
         }
