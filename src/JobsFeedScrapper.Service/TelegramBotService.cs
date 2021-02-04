@@ -50,7 +50,7 @@ namespace JobsFeedScrapper.Service
 
                     foreach (var job in e.Jobs)
                     {
-                        if (!firstMessage) {
+                        if (firstMessage) {
                             await Task.Delay(1000);
 
                             firstMessage = false;
