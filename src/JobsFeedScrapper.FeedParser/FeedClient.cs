@@ -97,10 +97,6 @@ namespace JobsFeedScrapper.FeedServiceClient
 
         private void RaiseNewJobs(FeedItem feed, IEnumerable<RssSchema> data)
         {
-            if (data.Count() == 0) {
-                _logger.LogInformation($"Feed {feed.Name}: no new jobs.");
-            }
-
             var jobs = data
                 .Where(j => j.PublishDate >= feed.LastCheckDate)
                 .Select(j => new JobDescription() { 
@@ -110,6 +106,13 @@ namespace JobsFeedScrapper.FeedServiceClient
                     FeedUrl = j.FeedUrl
                 })
                 .ToList();
+
+            if (jobs.Count() == 0) {
+                _logger.LogInformation($"Feed {feed.Name}: no new jobs.");
+            }
+            else {
+                _logger.LogInformation($"Feed {feed.Name}: {jobs.Count()} new jobs");
+            }   
 
             _eventHub.RaiseNewJobs(feed, jobs);
 
