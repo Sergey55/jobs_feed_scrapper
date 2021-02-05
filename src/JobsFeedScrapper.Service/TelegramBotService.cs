@@ -50,8 +50,6 @@ namespace JobsFeedScrapper.Service
                     {
                         await Task.Delay(1000);
 
-                        _logger.LogInformation($"{DateTime.UtcNow} - Sending message");                        
-
                         var content = job.Content
                             .Replace("<br />", "\n")
                             .Replace("&nbsp;", " ")
