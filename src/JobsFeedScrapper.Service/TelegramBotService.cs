@@ -46,15 +46,11 @@ namespace JobsFeedScrapper.Service
             { 
                 try
                 {
-                    var firstMessage = true;
-
                     foreach (var job in e.Jobs)
                     {
-                        if (firstMessage) {
-                            await Task.Delay(1000);
+                        await Task.Delay(1000);
 
-                            firstMessage = false;
-                        }
+                        _logger.LogInformation($"{DateTime.UtcNow} - Sending message");                        
 
                         var content = job.Content
                             .Replace("<br />", "\n")
