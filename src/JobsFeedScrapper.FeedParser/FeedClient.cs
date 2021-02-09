@@ -13,10 +13,6 @@ namespace JobsFeedScrapper.FeedServiceClient
 {
     public class FeedClient
     {
-        public delegate void NewJobsEventHandler(object sender, NewJobsEventArgs e);
-
-        public event NewJobsEventHandler NewJobs;
-
         private readonly IFeedClientConfig _config;
 
         private readonly ILogger<FeedClient> _logger;
@@ -85,9 +81,9 @@ namespace JobsFeedScrapper.FeedServiceClient
                     var rss = parser.Parse(content);
 
                     RaiseNewJobs(feed, rss);
-                }
 
-                feed.LastCheckDate = DateTime.UtcNow;
+                    feed.LastCheckDate = rss.Max(j => j.PublishDate);
+                }
             }
             catch (Exception e)
             {
@@ -98,7 +94,7 @@ namespace JobsFeedScrapper.FeedServiceClient
         private void RaiseNewJobs(FeedItem feed, IEnumerable<RssSchema> data)
         {
             var jobs = data
-                .Where(j => j.PublishDate >= feed.LastCheckDate)
+                .Where(j => j.PublishDate > feed.LastCheckDate)
                 .Select(j => new JobDescription() { 
                     PublishDate = j.PublishDate,
                     Title = j.Title,
@@ -111,12 +107,10 @@ namespace JobsFeedScrapper.FeedServiceClient
                 _logger.LogInformation($"Feed {feed.Name}: no new jobs.");
             }
             else {
-                _logger.LogInformation($"Feed {feed.Name}: {jobs.Count()} new jobs");
+                _logger.LogInformation($"Feed {feed.Name}: {jobs.Count()} new job(s)");
             }   
 
             _eventHub.RaiseNewJobs(feed, jobs);
-
-            NewJobs?.Invoke(this, new NewJobsEventArgs(feed, jobs));
         }
 
         private void CancelIfRunning()
