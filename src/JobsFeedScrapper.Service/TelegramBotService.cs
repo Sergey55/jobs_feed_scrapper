@@ -50,10 +50,7 @@ namespace JobsFeedScrapper.Service
                     {
                         await Task.Delay(1000);
 
-                        var content = job.Content
-                            .Replace("<br />", "\n")
-                            .Replace("&nbsp;", " ")
-                            .Replace("&bull;", "•");
+                        var content = ContentHelper.ReplaceSpecialSymbols(job.Content);
 
                         var sb = new StringBuilder();
                         sb.Append($"(<b>{e.Feed.Name}) {job.Title}</b>\n\n");
